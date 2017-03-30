@@ -5,6 +5,5 @@ p=Pict()
 
 gui = gui.display(p)
 
-
 gui.mainloop()
 
