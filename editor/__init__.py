@@ -84,6 +84,12 @@ class Pict:
 	def brighten(self, perc):
 		print('Applying brightening filter - ' + str(perc) + '%')
 
+	def grey(self):
+		print('Black and white filter')
+
+	def lines(self):
+		print('Black and white filter')
+
 
 	def getPath(self):
 		return self.name
