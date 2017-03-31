@@ -45,7 +45,7 @@ def display(p):
 	grey_btn=tk.Button(master=leftFrame, text="Odstíny šedi", command=p.grey, width=10)
 	grey_btn.grid(row=7, column=1, padx=10, pady=10)
 
-	lines_btn=tk.Button(master=leftFrame, text="Zvýraznit hrany", command=p.lines, width=10)
+	lines_btn=tk.Button(master=leftFrame, text="Zvýraznit hrany", command=p.edges, width=10)
 	lines_btn.grid(row=7, column=2, padx=10, pady=10)
 
 

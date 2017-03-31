@@ -88,6 +88,10 @@ class Pict:
 
 	def brighten(self, perc):
 		print('Applying brightening filter - ' + str(perc) + '%')
+		newData = self.data.astype(np.int32) * (perc/100)
+		np.clip(newData, 0,255, newData)
+		self.data = newData.astype('uint8')
+		self.updateImage()
 
 
 	def grey(self):
@@ -104,8 +108,8 @@ class Pict:
 		self.updateImage()
 
 
-	def lines(self):
-		print('Black and white filter')
+	def edges(self):
+		print('Detect edges')
 
 
 
