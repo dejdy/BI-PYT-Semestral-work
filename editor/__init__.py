@@ -5,12 +5,14 @@ from PIL import ImageTk, Image
 import numpy as np
 import tkinter as tk
 from tkinter import filedialog
+import os
 
 size=500, 400
 
 class Pict:
 	def __init__(self):
 		self.name='files/img.jpg'
+		self.ext = 'jpg'
 		img = PIL.Image.open(self.name)
 		self.data = np.asarray( img, dtype='uint8' )
 
@@ -40,28 +42,26 @@ class Pict:
 		
 
 	def updateImage(self):
-		self.writeImage('temp/temp.jpg')
-		img = PIL.Image.open('temp/temp.jpg')
-		self.reloadImage('temp/temp.jpg')
+		self.writeImage('temp/temp.' + self.ext)
+		img = PIL.Image.open('temp/temp.' + self.ext)
+		self.reloadImage('temp/temp.' + self.ext)
 
 	def loadImage(self):
-		f = filedialog.askopenfilename(title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+		f = filedialog.askopenfilename(title = "Vyberte soubor",filetypes = (("Soubory jpg","*.jpg *.jpeg *.JPG *.JPEG"),("Soubory png","*.png"),("Soubory gif","*.gif")))
 		if f is None:
 			return
+		self.ext = os.path.splitext(f)[1].replace(".","")
 		self.bw = False
 		self.name=f
 		self.loadArray()
 		print('Loaded image ' + self.name)
 
 	def writeImage(self, outName):
-		if self.bw == False:
-			outimg = PIL.Image.fromarray(self.data, "RGB")
-		else:
-			outimg = PIL.Image.fromarray(self.data).convert('RGB')
+		outimg = PIL.Image.fromarray(self.data).convert('RGB')
 		outimg.save(outName)
 
 	def saveImage(self):
-		f = filedialog.asksaveasfile(mode='w', defaultextension=".jpg")
+		f = filedialog.asksaveasfile(mode='wb',  filetypes = (("Soubory jpg","*.jpg"),("Soubory png","*.png"),("Soubory gif","*.gif")))
 		print('Saving image')
 		if f is None:
 			return
