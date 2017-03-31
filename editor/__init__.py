@@ -17,6 +17,7 @@ class Pict:
 		self.top = tk.Tk()
 		self.wid = tk.Frame(self.top, borderwidth=2, relief='groove')
 		self.canvas = tk.Label(self.wid)
+		self.bw = False
 
 	def reloadImage(self, name):
 		thumb = PIL.Image.open(name)
@@ -27,6 +28,7 @@ class Pict:
 
 	def revert(self):
 		self.loadArray()
+		self.bw = False
 
 	def loadArray(self):
 		self.reloadImage(self.name)
@@ -51,7 +53,10 @@ class Pict:
 		print('Loaded image ' + self.name)
 
 	def writeImage(self, outName):
-		outimg = PIL.Image.fromarray(self.data, "RGB")
+		if self.bw == False:
+			outimg = PIL.Image.fromarray(self.data, "RGB")
+		else:
+			outimg = PIL.Image.fromarray(self.data).convert('RGB')
 		outimg.save(outName)
 
 	def saveImage(self):
@@ -84,14 +89,25 @@ class Pict:
 	def brighten(self, perc):
 		print('Applying brightening filter - ' + str(perc) + '%')
 
+
 	def grey(self):
+		if self.bw == True:
+			return
+
 		print('Black and white filter')
+		R = self.data[:, :, 0]
+		G = self.data[:, :, 1]
+		B = self.data[:, :, 2]
+		self.data = R * 0.299 + G * 0.587 + B * 0.114 / 1000
+
+		self.bw = True
+		self.updateImage()
+
 
 	def lines(self):
 		print('Black and white filter')
 
 
-	def getPath(self):
-		return self.name
+
 
 

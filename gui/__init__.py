@@ -57,7 +57,7 @@ def display(p):
 
 	leftFrame.grid(row=1, column=2, rowspan=1000, padx=30, pady=40)
 
-	picture = Image.open(p.getPath())
+	picture = Image.open(p.name)
 	photoimage = ImageTk.PhotoImage(picture)
 
 	p.canvas = tk.Label(p.wid, image = photoimage)
