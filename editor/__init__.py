@@ -48,6 +48,7 @@ class Pict:
 		f = filedialog.askopenfilename(title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
 		if f is None:
 			return
+		self.bw = False
 		self.name=f
 		self.loadArray()
 		print('Loaded image ' + self.name)
@@ -102,16 +103,38 @@ class Pict:
 		R = self.data[:, :, 0]
 		G = self.data[:, :, 1]
 		B = self.data[:, :, 2]
-		self.data = R * 0.299 + G * 0.587 + B * 0.114 / 1000
+		self.data = (R * 0.299 + G * 0.587 + B * 0.114).astype('uint8')
 
 		self.bw = True
 		self.updateImage()
 
 
+	def newVal(self, f, i, j):
+		if i==0 or i >= (self.data.shape[0]-1) or j == 0 or j >= (self.data.shape[1]-1):
+			return self.data[i][j]
+		
+		val = 0;
+		for x in range(-1, 2):
+			for y in range(-1, 2):
+				val = val + self.data[i+x][j+y]*f[x+1][y+1]
+		return val
+
+	def applyFilter(self, f):
+		newData = np.empty((self.data.shape[0], self.data.shape[1]))
+		for i in range(self.data.shape[0]):
+			for j in range(self.data.shape[1]):
+				newData[i][j] = self.newVal(f, i, j)
+
+		np.clip(newData, 0,255, newData)
+		self.data = newData.astype('uint8')
+
+
 	def edges(self):
+		self.grey()
+		f = np.array([[-1, 0, 1],[-2, 0, 2],[-1, 0, 1]])
+		self.applyFilter(f)
+		self.updateImage()
 		print('Detect edges')
-
-
 
 
 
